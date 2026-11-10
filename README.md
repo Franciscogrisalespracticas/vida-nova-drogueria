@@ -1,34 +1,44 @@
 # VIDA NOVA Droguería
 
-Frontend comercial estático en React, TypeScript y Vite para catálogo y listas de consulta. No procesa pagos, no confirma compras y no dispone de inventario ni backend. Los precios son datos iniciales editables.
+Sitio frontend multipágina construido con React, TypeScript, Vite, GSAP y React Router. Diseño adaptable con portada cinematográfica y catálogo de 10 productos.
 
-## Requisitos y ejecución
+## Instalación
 
-- Node.js 22 o superior y npm.
-- `npm ci`
-- `npm run dev`
-- `npm run typecheck`
-- `npm run test -- --run`
-- `npm run build`
+```bash
+npm ci
+npm run dev
+```
 
-## Estructura
+Para generar la versión estática: `npm run build`. Para previsualizar: `npm run preview`.
 
-- `src/data/products.ts`: catálogo inicial, categorías y precios COP.
-- `src/data/promotions.ts`: promociones confirmadas (vacío mientras no existan). El precio se resuelve centralmente.
-- `src/config/business.ts`: ciudad, WhatsApp, correo, dirección y horarios. Valores de contacto vacíos hasta verificación.
-- `src/store/Cart.tsx`: estado y persistencia versionada en localStorage.
-- `src/pages/Pages.tsx`: páginas comerciales y formularios.
-- `public/videos/hero-pharmacy.mp4`: video adjunto del hero.
-- `public/images/`: póster, ilustraciones y recursos locales.
+## Video de portada
 
-## Editar información
+El paquete incluye `public/videos/hero-pharmacy.mp4`: video H.264 de 1280 × 720 y aproximadamente 8 segundos. La portada lo reproduce en bucle, sin sonido, y utiliza `public/images/hero-poster.svg` como póster.
 
-Ajusta productos y textos en `src/data/products.ts`. Configura promociones con precio anterior, promocional y estado activo en `src/data/promotions.ts`; el porcentaje se calcula. Edita `src/config/business.ts` solo con datos verificados. El número WhatsApp debe estar en formato internacional con código de país y sin `+` ni espacios. Sustituye `public/videos/hero-pharmacy.mp4` para cambiar el video y actualiza `public/images/hero-poster.jpg` con un fotograma representativo.
+## Datos comerciales
+
+`src/data.ts` contiene productos, precios, dirección, horarios y contacto. Todos los datos comerciales son ficticios y deben verificarse antes de usar el sitio para un negocio real. Para activar WhatsApp, coloca el número en formato internacional sin `+` en `business.whatsapp`.
+
+## Funcionamiento
+
+La lista de pedido y los favoritos se guardan localmente en el navegador. No hay pagos, inventario real, formularios enviados al servidor ni backend. Si no hay WhatsApp configurado, el botón copia el resumen. El formulario de contacto prepara y copia el mensaje.
 
 ## GitHub Pages
 
-La base de Vite está configurada para `/vida-nova-drogueria/` y el enrutamiento usa `HashRouter`, de modo que las rutas se conservan al refrescar GitHub Pages. El workflow `.github/workflows/deploy.yml` valida, prueba y publica `dist` al hacer push a `main`. En GitHub, configura Pages con fuente **GitHub Actions** si el repositorio no lo hace automáticamente.
+El repositorio previsto es `vida-nova-drogueria`; `vite.config.ts` ya contiene la base `/vida-nova-drogueria/`. Habilita GitHub Pages con fuente **GitHub Actions**. El workflow `.github/workflows/deploy.yml` compila y despliega al hacer push a `main`.
 
-## Límites actuales y evolución
+## Backend futuro
 
-El formulario prepara `mailto:` si existe correo y, si no, permite copiar. El pedido local es una lista estimada para consulta; no se transmite, reserva inventario ni realiza compra. Para backend futuro, separar el repositorio de catálogo, reglas comerciales, pedidos, inventario, pagos y clientes; añadir autenticación y controles de seguridad del lado servidor antes de manejar datos personales o pagos.
+Separar la fuente de productos en una capa de servicios, sustituir la persistencia local por API y agregar autenticación, inventario y pagos mediante backend independiente. No exponer credenciales en el frontend.
+
+## Nota de alcance
+
+El proyecto es una presentación comercial ficticia. No se han validado dirección, correo, precios, productos ni permisos regulatorios. No representa una droguería operativa ni ofrece recomendaciones médicas.
+
+## Publicacion
+
+El workflow `.github/workflows/deploy.yml` prepara el sitio para GitHub Pages desde la rama `main`, pero la publicacion requiere un repositorio existente y Pages habilitado para GitHub Actions. El ZIP no equivale a una publicacion y los archivos deben subirse descomprimidos al repositorio.
+
+## Validación
+
+`npm run build` comprueba TypeScript y genera `dist`. El paquete original no incluye pruebas automatizadas de Vitest.
