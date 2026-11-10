@@ -3,6 +3,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      cancel_deployment:
+        description: 'Optional stale Pages deployment ID to cancel before publishing'
+        required: false
+        type: string
 permissions:
   contents: read
   pages: write
@@ -30,5 +35,11 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+      - name: Cancel requested stale Pages deployment
+        if: github.event_name == 'workflow_dispatch' && inputs.cancel_deployment != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PAGES_DEPLOYMENT: ${{ inputs.cancel_deployment }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/pages/deployments/$PAGES_DEPLOYMENT/cancel"
       - id: deployment
         uses: actions/deploy-pages@v4
